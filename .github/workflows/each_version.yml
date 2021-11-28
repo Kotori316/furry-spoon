@@ -1,0 +1,65 @@
+name: Each Download Update
+
+on:
+  schedule:
+    - cron: "15 15 * * *"
+  workflow_dispatch:
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/kotori316/downloadcounts/dlcount:latest
+      credentials:
+        username: kotori316
+        password: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+      - name: Date
+        run: |
+          TZ="UTC" date
+          TZ="Asia/Tokyo" date
+      - uses: actions/checkout@v2
+        with:
+          repository: "Kotori316/furry-spoon"
+          path: "configuration"
+          token: ${{ secrets.PAT_TOKEN }}
+      - uses: actions/checkout@v2
+        with:
+          repository: "Kotori316/DownloadCounts"
+          path: "data"
+          token: ${{ secrets.PAT_TOKEN }}
+      - name: RUN
+        run: |
+          export DL_PARENT="${GITHUB_WORKSPACE}/data"
+          export PROJECT_IDS="${GITHUB_WORKSPACE}/configuration"
+          /root/get_each.sh
+      - name: Check updated files(data)
+        run: |
+          cd ${GITHUB_WORKSPACE}/data
+          ls -al
+          git status
+      - name: Check updated files(Configuration)
+        run: |
+          cd ${GITHUB_WORKSPACE}/configuration
+          ls -al
+          git status
+      - name: Git Commit
+        run: |
+          cd ${GITHUB_WORKSPACE}/configuration
+          git config --local user.email "Kotori316+action-bot@gmail.com"
+          git config --local user.name "BOT"
+          git add .
+          git commit -m $(TZ="Asia/Tokyo" date "+%Y-%m-%dT%H:%M")
+          git push
+
+          cd ${GITHUB_WORKSPACE}/data
+          git config --local user.email "Kotori316+action-bot@gmail.com"
+          git config --local user.name "BOT"
+          git add *.csv
+          git commit -m $(TZ="Asia/Tokyo" date "+%Y-%m-%dT%H:%M")
+          git push
+      - name: Screenshot
+        if: failure()
+        uses: actions/upload-artifact@v2
+        with:
+          path: "screenshots/*.png"
