@@ -45,19 +45,20 @@ jobs:
           git status
       - name: Git Commit
         run: |
-          cd ${GITHUB_WORKSPACE}/configuration
-          git config --local user.email "Kotori316+action-bot@gmail.com"
-          git config --local user.name "BOT"
-          git add .
-          git commit -m $(TZ="Asia/Tokyo" date "+%Y-%m-%dT%H:%M")
-          git push
-
           cd ${GITHUB_WORKSPACE}/data
+          echo "Commit ${GITHUB_WORKSPACE}/data"
           git config --local user.email "Kotori316+action-bot@gmail.com"
           git config --local user.name "BOT"
           git add *.csv
           git commit -m $(TZ="Asia/Tokyo" date "+%Y-%m-%dT%H:%M")
           git push
+          
+          cd ${GITHUB_WORKSPACE}/configuration
+          echo "Commit ${GITHUB_WORKSPACE}/configuration"
+          git config --local user.email "Kotori316+action-bot@gmail.com"
+          git config --local user.name "BOT"
+          git add .
+          (git commit -m $(TZ="Asia/Tokyo" date "+%Y-%m-%dT%H:%M") && git push) || true
       - name: Screenshot
         if: failure()
         uses: actions/upload-artifact@v2
