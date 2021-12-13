@@ -63,5 +63,7 @@ jobs:
         if: failure()
         uses: actions/upload-artifact@v2
         with:
-          name: ${{ github.event.repository.name }}-${{ github.run_number }}
-          path: "screenshots/*.png"
+          name: furry-spoon-${{ github.run_number }}
+          path: |
+            "screenshots/*.png"
+            "response/*.json"
