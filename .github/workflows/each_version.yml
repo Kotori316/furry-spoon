@@ -13,11 +13,17 @@ jobs:
       credentials:
         username: kotori316
         password: ${{ secrets.GITHUB_TOKEN }}
+      options: --user root
     steps:
       - name: Date
         run: |
           TZ="UTC" date
           TZ="Asia/Tokyo" date
+      - name: Check Env
+        run: |
+          echo ${HOME}
+          pwd
+          whoami
       - uses: actions/checkout@v2
         with:
           repository: "Kotori316/furry-spoon"
