@@ -2,7 +2,7 @@ name: Each Download Update
 
 on:
   schedule:
-    - cron: "0 1 * * SUN"
+    - cron: "30 3 * * SUN"
   workflow_dispatch:
 
 jobs:
