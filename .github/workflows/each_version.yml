@@ -39,6 +39,8 @@ jobs:
           export DL_PARENT="${GITHUB_WORKSPACE}/data"
           export PROJECT_IDS="${GITHUB_WORKSPACE}/configuration"
           /root/get_each.sh
+        env:
+          CURSE_API_TOKEN: ${{ secrets.CURSE_API_TOKEN }}
       - name: Check updated files(data)
         run: |
           cd ${GITHUB_WORKSPACE}/data
