@@ -45,11 +45,13 @@ jobs:
         run: |
           cd ${GITHUB_WORKSPACE}/data
           ls -al
+          git pull
           git status
       - name: Check updated files(Configuration)
         run: |
           cd ${GITHUB_WORKSPACE}/configuration
           ls -al
+          git pull
           git status
       - name: Git Commit
         run: |
