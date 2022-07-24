@@ -3,6 +3,7 @@ name: Each Download Update
 on:
   schedule:
     - cron: "30 3 * * SUN"
+    - cron: "30 15 * * WED"
   workflow_dispatch:
 
 jobs:
@@ -14,6 +15,9 @@ jobs:
         username: kotori316
         password: ${{ secrets.GITHUB_TOKEN }}
       options: --user root
+    env:
+      RESPONSE_PARENT: /response
+      SCREENSHOT_PARENT: /screenshots
     steps:
       - name: Date
         run: |
@@ -69,11 +73,16 @@ jobs:
           git config --local user.name "BOT"
           git add .
           (git commit -m $(TZ="Asia/Tokyo" date "+%Y-%m-%dT%H:%M") && git push) || true
+      - name: Check responses
+        if: failure()
+        run: |
+          ls ${{ env.SCREENSHOT_PARENT }}
+          ls ${{ env.RESPONSE_PARENT }}
       - name: Screenshot
         if: failure()
         uses: actions/upload-artifact@v2
         with:
           name: furry-spoon-${{ github.run_number }}
           path: |
-            "screenshots/*.png"
-            "response/*.json"
+            ${{ env.SCREENSHOT_PARENT }}/*.png
+            ${{ env.RESPONSE_PARENT }}/*.json
