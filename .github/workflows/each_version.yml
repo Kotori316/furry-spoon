@@ -76,8 +76,13 @@ jobs:
       - name: Check responses
         if: failure()
         run: |
-          ls ${{ env.SCREENSHOT_PARENT }}
-          ls ${{ env.RESPONSE_PARENT }}
+          echo "::group::Screenshots"
+          ls -al ${{ env.SCREENSHOT_PARENT }} || :
+          echo "::endgroup::"
+
+          echo "::group::Responses"
+          ls -al ${{ env.RESPONSE_PARENT }} || :
+          echo "::endgroup::"
       - name: Screenshot
         if: failure()
         uses: actions/upload-artifact@v2
