@@ -1,10 +1,10 @@
 name: Each Download Update
 
 on:
-  schedule:
-    - cron: "30 3 * * SUN"
+  # schedule:
+    # - cron: "30 3 * * SUN"
     # - cron: "30 21 * * MON"
-    - cron: "30 15 * * WED"
+    # - cron: "30 15 * * WED"
     # - cron: "30 9 * * FRI"
   workflow_dispatch:
 
